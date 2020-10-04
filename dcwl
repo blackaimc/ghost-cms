@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "start" ]; then
+    sudo docker-compose start
+fi
+
+if [ "$1" == "stop" ]; then
+    sudo docker-compose stop
+fi
+
+if [ "$1" == "update" ]; then    
+        sudo docker-compose pull && sudo docker-compose up -d && sudo docker image prune -f
+fi
+
+if [ "$1" == "setup" ]; then
+  echo 'Setting system...' \
+  && read -p "[1/2] Enter your domain (ex : mydomain.com or localhost) : " DOMAIN
+  read -p "[2/2] Which port do you want to access the web server on? (ex : 80) " WEB_PORT \
+  && rm -rf ghost; git clone https://github.com/woosungchoi/ghost-cms ghost \
+  && cd ghost \
+  && mv docker-compose.yml docker-compose.ssl.yml \
+  && mv docker-compose.local.yml docker-compose.yml \
+  && sed -i "s/<port>/$WEB_PORT/g" docker-compose.yml \
+  && sed -i "s/<domain>/$DOMAIN/g" docker-compose.yml \
+  && sudo chmod +x dc \
+  && echo 'Starting Docker and db...' \
+  && sudo docker-compose up -d db \
+  && echo 'Waiting 10 secs for Mariadb to build databases...' \
+  && sleep 10 \
+  && sudo docker-compose up -d --no-deps ghost \
+  && echo 'Done! 🎉' \
+  && echo 'by Rafael Correa Gomes and Woosung Choi' \
+  && echo 'Access your ghost: http://'$DOMAIN':'$WEB_PORT \
+  && echo 'Access your ghost admin page: http://'$DOMAIN':'$WEB_PORT'/ghost';
+fi
