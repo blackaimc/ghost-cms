@@ -73,6 +73,20 @@ sudo yum -y update && sudo yum install -y curl git
 curl -o dccl https://raw.githubusercontent.com/woosungchoi/ghost-cms/master/dccl && bash dccl setup && rm -f dccl
 ```
 
+### For Windows 10 WSL2 Ubuntu 20.04 LTS users
+
+Install WSL2 Ubuntu 20.04 LTS and docker
+
+https://www.wsgvet.com/ubuntu/160 , https://www.wsgvet.com/ubuntu/180
+
+```bash
+sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y
+```
+
+```bash
+curl -o dcwl https://raw.githubusercontent.com/woosungchoi/ghost-cms/master/dcwl && bash dcwl setup && rm -f dcwl
+```
+
 🎉Done! Access your http://localhost:your_port/ghost or http://your_domain:your_port/ghost to access the admin panel and create your account.
 
 ## Commands
